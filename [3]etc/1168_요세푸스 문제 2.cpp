@@ -13,7 +13,6 @@
 using namespace std;
 
 int N, K;
-int a, b;
 int tree[(1 << 18)];
 
 // 세그먼트 트리 초기화 (루트노드, 시작, 끝)
