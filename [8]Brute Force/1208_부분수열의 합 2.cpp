@@ -4,34 +4,30 @@
  */
 
 #include <iostream>
-#include <map>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-int n, s, half;
-int arr[40];
-map<int, int> mp;
-int answer = 0;
+int n, s;
+int A[20];
+int B[20];
 
-void dfsLeft(int idx, int sum)
+vector<int> makeSum(int arr[], int size)
 {
-	if (idx == half) {
-		mp[sum]++;
-		return;
+	vector<int> res;
+
+	for (int i = 0; i < (1 << size); i++) {
+		int sum = 0;
+		for (int j = 0; j < size; j++) {
+			if (i & (1 << j))
+				sum += arr[j];
+			
+		}
+		res.push_back(sum);
 	}
+	sort(res.begin(), res.end());
 
-	dfsLeft(idx + 1, sum);
-	dfsLeft(idx + 1, sum + arr[idx]);
-}
-
-void dfsRight(int idx, int sum)
-{
-	if (idx == n) {
-		answer += mp[s - sum];
-		return;
-	}
-
-	dfsRight(idx + 1, sum);
-	dfsRight(idx + 1, sum + arr[idx]);
+	return res;
 }
 
 int main()
@@ -41,13 +37,20 @@ int main()
 	cout.tie(NULL);
 
 	cin >> n >> s;
-	for (int i = 0; i < n; i++) {
-		cin >> arr[i];
-	}
 
-	half = n / 2;
-	dfsLeft(0, 0);
-	dfsRight(half, 0);
+	for (int i = 0; i < n / 2; i++) cin >> A[i];
+	for (int i = 0; i < (n - n / 2); i++) cin >> B[i];
+
+	vector<int> a = makeSum(A, n / 2);
+	vector<int> b = makeSum(B, (n - n / 2));
+
+	long long answer = 0;
+	for (int i = 0; i < b.size(); i++) {
+		int temp = s - b[i];
+		auto hi = upper_bound(a.begin(), a.end(), temp);
+		auto lo = lower_bound(a.begin(), a.end(), temp);
+		answer += hi - lo;
+	}
 	
 	if (s == 0)
 		answer--;
