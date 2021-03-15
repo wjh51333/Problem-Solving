@@ -18,7 +18,7 @@ int tree[(1 << 18)];
 // 세그먼트 트리 초기화 (루트노드, 시작, 끝)
 int init(int node, int start, int end)
 {
-	// start와 end의 위치가 일치하면 1을 넣어준다
+	// start와 end의 위치가 일치하면 1을 넣어준다 (리프노드)
 	if (start == end)
 		return tree[node] = 1;
 
